@@ -78,9 +78,9 @@ cc-hard: ## Supprimer le répertoire cache
 db-restore: ## Réinitialiser la base de donnée
 	$(SYMFONY_CONSOLE) d:d:d --force --connection --if-exists
 	$(SYMFONY_CONSOLE) d:d:c
-	$(SYMFONY_CONSOLE) d:m:m --no-interaction
+#	$(SYMFONY_CONSOLE) d:m:m --no-interaction
 	$(SYMFONY_CONSOLE) d:s:u --force
-	$(SYMFONY_CONSOLE) d:f:l --no-interaction
+#	$(SYMFONY_CONSOLE) d:f:l --no-interaction
 
 db-update: ## update de la base de donnée
 	$(SYMFONY_CONSOLE) d:m:m --no-interaction
