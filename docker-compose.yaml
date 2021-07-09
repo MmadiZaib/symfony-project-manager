@@ -57,18 +57,18 @@ services:
       - .:/application
       - ./docker/php/php-ini.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
 
-  #  node: &node
-  #    image: node:10.22-slim
-  #    networks:
-  #      - main
-  #    ports:
-  #      - 3000:3000
-  #    volumes:
-  #      - ./:/application
-  #      - node-volume:/application/node_modules:nocopy
-  #    working_dir: /application
-  #    tty: true
-  #    stdin_open: true
+  node:
+    image: node:10.22-slim
+    container_name: node
+    networks:
+      - main
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/application
+    working_dir: /application
+    tty: true
+    stdin_open: true
 
   #  memcached:
   #    image: memcached:alpine
