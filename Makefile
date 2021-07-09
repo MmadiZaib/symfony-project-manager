@@ -113,8 +113,20 @@ test-single: ## Lancement test sur un fichier unique
 
 tests: test-func test-unit	## Lancement de tous tests
 
-cs-fix: ## LŒancement du php-cs-fixer
+cs-fix: ## Lancement du php-cs-fixer
 	$(PHP_DOCKER_COMPOSE_EXEC) vendor/bin/php-cs-fixer fix src
+
+docker-build: ## Build des images docker
+	$(DOCKER_COMPOSE) build
+
+docker-pull: ## Docker pull
+	$(DOCKER_COMPOSE) pull
+
+docker-down: ## Docker down
+	$(DOCKER_COMPOSE) down --remove-orphans
+
+docker-down-clear: ## Docker down
+	$(DOCKER_COMPOSE) down -v --remove-orphans
 
 %:
     @:
