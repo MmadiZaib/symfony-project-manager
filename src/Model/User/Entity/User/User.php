@@ -90,12 +90,12 @@ class User
 
     public function requestPasswordReset(ResetToken $token, DateTimeImmutable $date): void
     {
-        if (!$this->isActive()) {
-            throw new DomainException('User is not active.');
-        }
-
         if (!$this->email) {
             throw new DomainException('Email is not specified.');
+        }
+
+        if (!$this->isActive()) {
+            throw new DomainException('User is not active.');
         }
 
         if ($this->resetToken && $this->resetToken->isExpiredTo($date)) {

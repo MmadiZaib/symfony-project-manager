@@ -14,6 +14,12 @@ class ConfirmTest extends TestCase
     public function testSuccess(): void
     {
         $user = $this->buildSignedUpUser();
+        $user->signUpByEmail(
+            $email = new Email('test@app.test'),
+            $hash = 'hash',
+            $token = 'token'
+        );
+
         $user->confirmSignUp();
 
         $this->assertFalse($user->isWait());
@@ -36,9 +42,6 @@ class ConfirmTest extends TestCase
         return new User(
             Id::next(),
             new \DateTimeImmutable(),
-            new Email('test@app.test'),
-            'hash',
-            $token = 'token'
         );
     }
 }
