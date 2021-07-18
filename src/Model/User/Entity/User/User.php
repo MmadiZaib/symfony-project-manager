@@ -7,7 +7,16 @@ namespace App\Model\User\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use DomainException;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="user_users", uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"email"}),
+ *     @ORM\UniqueConstraint(columns={"reset_token_token"})
+ * })
+ */
 class User
 {
     private const STATUS_WAIT = 'wait';
@@ -15,35 +24,66 @@ class User
     private const STATUS_NEW = 'new';
 
 
-    /** @var string */
+    /**
+     * @var string
+     * @ORM\Column(type="user_user_id")
+     * @ORM\Id
+     */
     private $id;
 
-    /** @var DateTimeImmutable */
+    /**
+     * @var DateTimeImmutable
+     * @ORM\Column(type="date_immutable")
+     */
     private $date;
 
-    /** @var Email|null */
+    /**
+     * @var Email|null
+     * @ORM\Column(type="user_user_email", nullable=true)
+     */
     private $email;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", nullable=true, name="password_hash")
+     */
     private $passwordHash;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", nullable=true, name="confirm_token")
+     */
     private $confirmToken;
 
-    /** @var ResetToken|null */
+    /**
+     * @var ResetToken|null
+     * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token_")
+     */
     private $resetToken;
 
-    /** @var string */
-    private $status;
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=16)
+     */
+    private $status = self::STATUS_NEW;
 
-    /** @var Network[]|ArrayCollection */
+    /**
+     * @var Role
+     * @ORM\Column(type="user_user_role")
+     */
+    private $role;
+
+    /**
+     * @var Network[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="Network", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     */
     private $networks;
 
     public function __construct(Id $id, DateTimeImmutable $date)
     {
         $this->id = $id;
         $this->date = $date;
-        $this->status = self::STATUS_NEW;
+        $this->role = Role::user();
         $this->networks = new ArrayCollection();
     }
 
@@ -117,6 +157,14 @@ class User
         $this->passwordHash = $hash;
     }
 
+    public function changeRole(Role $role): void
+    {
+        if ($this->role->isEqual($role)) {
+            throw new DomainException('Role is already same.');
+        }
+        $this->role = $role;
+    }
+
     public function isWait(): bool
     {
         return $this->status === self::STATUS_WAIT;
@@ -166,5 +214,20 @@ class User
     public function getResetToken(): ?ResetToken
     {
         return $this->resetToken;
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function checkEmbeds(): void
+    {
+        if ($this->resetToken->isEmpty()) {
+            $this->resetToken = null;
+        }
     }
 }

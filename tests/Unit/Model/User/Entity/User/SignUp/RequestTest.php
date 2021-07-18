@@ -33,5 +33,7 @@ class RequestTest extends TestCase
         $this->assertEquals($email, $user->getEmail());
         $this->assertEquals($hash, $user->getPasswordHash());
         $this->assertEquals($token, $user->getConfirmToken());
+
+        $this->assertTrue($user->getRole()->isUser());
     }
 }
