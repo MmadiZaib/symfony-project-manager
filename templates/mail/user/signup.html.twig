@@ -1,0 +1,9 @@
+{% extends 'mail/base.html.twig' %}
+
+{% block body %}
+    <p>Sign up confirm link:</p>
+
+    {% set url = url('auth.signup.confirm', {'token': token}) %}
+
+    <p><a href="{{ url }}"> {{ url }} </a></p>
+{% endblock %}

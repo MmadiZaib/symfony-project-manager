@@ -58,7 +58,7 @@ services:
       - ./docker/php/php-ini.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
 
   node:
-    image: node:12.22.3-slim
+    image: node:14.17-slim
     container_name: node-project-manager
     networks:
       - main
@@ -81,6 +81,7 @@ services:
     container_name: mailhog-project-manager
     ports:
       - "8025:8025"
+      - "1025:1025"
 
   redis:
     image: redis:alpine
