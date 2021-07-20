@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace App\Model\User\UserCase\Reset\Reset;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class Command
 {
-    /** @var string */
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     */
     public $token;
 
-    /** @var string */
+    /**
+     * @var string
+     * @Assert\Length(min=6)
+     */
     public $password;
 
     public function __construct(string $token)

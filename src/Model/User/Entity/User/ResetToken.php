@@ -35,7 +35,9 @@ class ResetToken
 
     public function isExpiredTo(DateTimeImmutable $date): bool
     {
-        return $this->expires <= $date;
+        $expireDate = $this->expires->add(\DateInterval::createFromDateString('+1 day'));
+
+        return $expireDate <= $date;
     }
 
     public function getToken(): string
