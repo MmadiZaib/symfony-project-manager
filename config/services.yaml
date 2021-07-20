@@ -32,11 +32,15 @@ services:
 
     App\Model\User\Entity\User\UserRepository: ~
 
-    App\Model\User\Service\ConfirmTokenSender:
-        $from: {'%env(MAILER_FROM_NAME)%': '%env(MAILER_FROM_NAME)%'}
 
-    App\Model\User\Service\ResetTokenSender:
-      $from: { '%env(MAILER_FROM_NAME)%': '%env(MAILER_FROM_NAME)%' }
+  # Swift Mailer plugins
+    Finesse\SwiftMailerDefaultsPlugin\SwiftMailerDefaultsPlugin:
+      tags:
+        - { name: swiftmailer.default.plugin }
+      arguments:
+        $defaults:
+          from:
+            '%env(MAILER_FROM_EMAIL)%': '%env(MAILER_FROM_NAME)%'
 
     App\Model\User\Service\ResetTokenizer:
       factory: 'App\Container\Model\User\ResetTokenizerFactory:create'

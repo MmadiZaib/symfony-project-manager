@@ -88,6 +88,9 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "finesse/swiftmailer-defaults-plugin": {
+        "version": "v2.0.3"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
