@@ -65,7 +65,7 @@ class UserIdentity implements UserInterface, EquatableInterface
 
     public function isActive(): bool
     {
-        return $this->active === User::STATUS_ACTIVE;
+        return $this->status === User::STATUS_ACTIVE;
     }
 
     public function isEqualTo(UserInterface $user)
