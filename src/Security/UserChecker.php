@@ -25,8 +25,10 @@ class UserChecker implements UserCheckerInterface
         }
     }
 
-    public function checkPostAuth(UserInterface $user)
+    public function checkPostAuth(UserInterface $userIdentity)
     {
-
+        if (!$userIdentity instanceof UserIdentity) {
+            return;
+        }
     }
 }
