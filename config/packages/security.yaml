@@ -16,6 +16,11 @@ security:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
 
+            remember_me:
+              secret: '%kernel.secret%'
+              lifetime: 604800 # 1 week in seconds
+              path: /
+
             form_login: true
 
             # activate different ways to authenticate
