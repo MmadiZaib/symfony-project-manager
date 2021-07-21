@@ -31,7 +31,13 @@ class UserFetcher
     {
         $stmt = $this->connection
             ->createQueryBuilder()
-            ->select('id', 'email', 'password_hash', 'role')
+            ->select(
+                'id',
+                'email',
+                'password_hash',
+                'role',
+                'active'
+            )
             ->from('user_users')
             ->where('email = :email')
             ->setParameter(':email', $email)
