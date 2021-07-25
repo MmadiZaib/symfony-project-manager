@@ -36,7 +36,7 @@ class UserFetcher
                 'email',
                 'password_hash',
                 'role',
-                'active'
+                'status'
             )
             ->from('user_users')
             ->where('email = :email')

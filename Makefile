@@ -106,7 +106,7 @@ test-single-coverage: ## Lancement d'un single test coverage
 	$(PHP_DOCKER_COMPOSE_EXEC) bin/phpunit tests/unit/ --testdox --coverage-text $(test)
 
 test-func: db-restore-test	## Lancement des tests fonctionnels
-	$(PHP_DOCKER_COMPOSE_EXEC) bin/phpunit tests/functional/
+	$(PHP_DOCKER_COMPOSE_EXEC) bin/phpunit tests/Functional/
 
 test-single: ## Lancement test sur un fichier unique
 	$(PHP_DOCKER_COMPOSE_EXEC) bin/phpunit --testdox $(test)
