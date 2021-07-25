@@ -3,6 +3,9 @@ version: "3.1"
 networks:
   main:
 
+volumes:
+  certs:
+
 services:
   mysqldb:
     image: mysql:5.7
@@ -45,7 +48,8 @@ services:
       - .:/application
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443
 
   php-fpm:
     build: docker/php
