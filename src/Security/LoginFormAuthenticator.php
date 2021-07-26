@@ -2,14 +2,16 @@
 
 namespace App\Security;
 
-use App\Model\User\Entity\User\User;
 use App\Model\User\Service\PasswordHasher;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Security;
@@ -100,15 +102,35 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            return new RedirectResponse($targetPath);
-        }
 
-        return new RedirectResponse($this->urlGenerator->generate('home'));
+        if ($request->isXmlHttpRequest()) {
+            $array = array( 'success' => true );
+            $response = new JsonResponse( json_encode( $array ) );
+            $response->headers->set( 'Content-Type', 'application/json' );
+
+            return $response;
+        } else {
+            if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+                return new RedirectResponse($targetPath);
+            }
+
+            return new RedirectResponse($this->urlGenerator->generate('home'));
+        }
     }
 
     protected function getLoginUrl()
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $array = array( 'success' => false, 'message' => $exception->getMessage());
+            $response = new JsonResponse( json_encode( $array ) );
+            $response->headers->set( 'Content-Type', 'application/json' );
+
+            return $response;
+        }
     }
 }
