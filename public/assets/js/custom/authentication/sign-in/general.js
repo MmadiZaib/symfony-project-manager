@@ -55,32 +55,38 @@ var KTSigninGeneral = function() {
                     // Disable button to avoid multiple click
                     submitButton.disabled = true;
 
+                    var data = $(form).serialize();
 
-                    // Simulate ajax request
-                    setTimeout(function() {
-                        // Hide loading indication
-                        submitButton.removeAttribute('data-kt-indicator');
+                    // Submit
+                    $.ajax({
+                        type: "POST",
+                        url: _loginUrl,
+                        data: data,
+                        success: function(response, status, xhr) {
+                            toastr.success(
+                                "You have successfully logged in!",
+                                {timeOut: 0, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                            );
 
-                        // Enable button
-                        submitButton.disabled = false;
+                            // Hide loading indication
+                            submitButton.removeAttribute('data-kt-indicator');
+                            window.location = response.redirect_url;
 
-                        // Show message popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-                        Swal.fire({
-                            text: "You have successfully logged in!",
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn btn-primary"
-                            }
-                        }).then(function (result) {
-                            if (result.isConfirmed) {
-                                //form.querySelector('[name="email"]').value= "";
-                                //form.querySelector('[name="password"]').value= "";
-                                form.submit(); // submit form
-                            }
-                        });
-                    }, 2000);
+                        },
+                        error: function(response) {
+                            toastr.error(
+                                "Please try it again later.",
+                                "Something went wrong!",
+                                {timeOut: 2, extendedTimeOut: 0, closeButton: true, closeDuration: 0}
+                            );
+
+                            // Hide loading indication
+                            submitButton.removeAttribute('data-kt-indicator');
+
+                            // Enable button
+                            submitButton.disabled = false;
+                        }
+                    });
                 } else {
                     // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
                     Swal.fire({

@@ -104,8 +104,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     {
 
         if ($request->isXmlHttpRequest()) {
-            $array = array( 'success' => true );
-            $response = new JsonResponse( json_encode( $array ) );
+            $response = new JsonResponse([
+                'success' => true,
+                'redirect_url' => $this->urlGenerator->generate('home')
+            ]);
             $response->headers->set( 'Content-Type', 'application/json' );
 
             return $response;
@@ -126,8 +128,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         if ($request->isXmlHttpRequest()) {
-            $array = array( 'success' => false, 'message' => $exception->getMessage());
-            $response = new JsonResponse( json_encode( $array ) );
+            $response = new JsonResponse([ 'success' => false, 'message' => $exception->getMessage()], Response::HTTP_UNAUTHORIZED);
             $response->headers->set( 'Content-Type', 'application/json' );
 
             return $response;
