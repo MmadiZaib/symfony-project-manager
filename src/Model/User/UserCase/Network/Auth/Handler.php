@@ -10,6 +10,7 @@ use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
 use DateTimeImmutable;
+use DomainException;
 
 class Handler
 {
@@ -25,7 +26,7 @@ class Handler
     public function handle(Command $command): void
     {
         if ($this->users->hasByNetworkIdentity($command->network, $command->identity)) {
-            throw new \DomainException('User already exists.');
+            throw new DomainException('User already exists.');
         }
 
         $user = new User(Id::next(), new DateTimeImmutable());

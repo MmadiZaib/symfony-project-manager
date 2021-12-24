@@ -6,6 +6,7 @@ namespace App\Controller\Auth;
 
 use App\Model\User\UserCase\Reset;
 use App\ReadModel\User\UserFetcher;
+use DomainException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class ResetController extends AbstractController
                 $handler->handle($command);
                 $this->addFlash('success', 'Check your email.');
                 return $this->redirectToRoute('home');
-            } catch (\DomainException $e) {
+            } catch (DomainException $e) {
                 $this->logger->error($e->getMessage(), ['exception' => $e]);
                 $this->addFlash('error', $e->getMessage());
             }
@@ -76,7 +77,7 @@ class ResetController extends AbstractController
                 $handler->handle($command);
                 $this->addFlash('success', 'Password is successfully changed.');
                 return $this->redirectToRoute('home');
-            } catch (\DomainException $e) {
+            } catch (DomainException $e) {
                 $this->logger->error($e->getMessage(), ['exception' => $e]);
                 $this->addFlash('error', $e->getMessage());
             }

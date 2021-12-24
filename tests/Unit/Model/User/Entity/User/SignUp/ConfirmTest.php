@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Model\User\Entity\User\SignUp;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class ConfirmTest extends TestCase
@@ -41,7 +42,7 @@ class ConfirmTest extends TestCase
     {
         return new User(
             Id::next(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable()
         );
     }
 }

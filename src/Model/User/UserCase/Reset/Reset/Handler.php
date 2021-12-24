@@ -5,6 +5,8 @@ namespace App\Model\User\UserCase\Reset\Reset;
 use App\Model\Flusher;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Service\PasswordHasher;
+use DateTimeImmutable;
+use DomainException;
 
 class Handler
 {
@@ -26,10 +28,10 @@ class Handler
     public function handle(Command $command): void
     {
         if (!$user = $this->users->findByResetToken($command->token)) {
-            throw new \DomainException('Incorrect or confirmed token.');
+            throw new DomainException('Incorrect or confirmed token.');
         }
 
-        $user->passwordReset(new \DateTimeImmutable(), $this->hasher->hash($command->password));
+        $user->passwordReset(new DateTimeImmutable(), $this->hasher->hash($command->password));
 
         $this->flusher->flush();
     }

@@ -5,6 +5,7 @@ DOCKER_COMPOSE=@docker-compose
 DOCKER_COMPOSE_EXEC=$(DOCKER_COMPOSE) exec
 PHP_DOCKER_COMPOSE_EXEC=$(DOCKER_COMPOSE_EXEC) php-fpm
 NODE_DOCKER_COMPOSE_EXEC=$(DOCKER_COMPOSE_EXEC) node
+NGINX_DOCKER_COMPOSE_EXEC=$(DOCKER_COMPOSE_EXEC) nginx
 COMPOSER=$(PHP_DOCKER_COMPOSE_EXEC) composer
 SYMFONY_CONSOLE=$(PHP_DOCKER_COMPOSE_EXEC) bin/console
 
@@ -34,6 +35,9 @@ ssh-php:	## Connexion au container php
 
 ssh-node:	## Connexion au container php
 	$(NODE_DOCKER_COMPOSE_EXEC) bash
+
+ssh-nginx:	## Connexion au container php
+	$(NGINX_DOCKER_COMPOSE_EXEC) sh
 
 fix-permissions: ## fix permissions
 	$(PHP_DOCKER_COMPOSE_EXEC) chown -R www-data:www-data /application/var/cache

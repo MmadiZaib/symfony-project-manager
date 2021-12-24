@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\User\Entity\User;
 
+use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
@@ -35,7 +36,7 @@ class ResetToken
 
     public function isExpiredTo(DateTimeImmutable $date): bool
     {
-        $expireDate = $this->expires->add(\DateInterval::createFromDateString('+1 day'));
+        $expireDate = $this->expires->add(DateInterval::createFromDateString('+1 day'));
 
         return $expireDate <= $date;
     }

@@ -96,7 +96,7 @@ services:
     container_name: redis-project-manager
 
   adminer:
-    container_name: adminer
+    container_name: adminer-project-manager
     image: adminer
     restart: always
     ports:

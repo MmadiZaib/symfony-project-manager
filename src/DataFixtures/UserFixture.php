@@ -7,6 +7,7 @@ use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\Role;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Service\PasswordHasher;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -25,7 +26,7 @@ class UserFixture extends Fixture
 
         $user = new User(
             Id::next(),
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $user->signUpByEmail(
